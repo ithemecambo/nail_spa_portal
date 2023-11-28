@@ -8,8 +8,10 @@ class ServiceCreateForm(forms.ModelForm):
         fields = [
             'parent',
             'name',
-            'status',
-            'photo_url'
+            'price',
+            'symbol',
+            'photo_url',
+            'description',
         ]
 
 

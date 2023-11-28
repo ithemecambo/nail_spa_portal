@@ -46,7 +46,7 @@ class AccountAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'nickname', 'gender', 'phone', 'fax', 'ssn', 'address', 'photo_url', 'email',
+            'fields': ('first_name', 'last_name', 'nickname', 'gender', 'phone', 'fax', 'ssn', 'address', 'photo_url', 'username', 'email',
                        'password1', 'password2', 'is_admin', 'is_staff', 'is_active')}
          ),
     )

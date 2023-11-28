@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 
@@ -41,6 +42,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, null=True, verbose_name='Last Name')
     nickname = models.CharField(max_length=30, verbose_name='Nickname')
     gender = models.CharField(choices=USER_GENDER_CHOICES, default='Male', max_length=10, verbose_name='Gender')
+    username = models.CharField(max_length=50, blank=False, null=False, verbose_name='Username')
     email = models.EmailField(unique=True, null=False, verbose_name='Email')
     password = models.CharField(max_length=128, verbose_name='Password')
     phone = models.CharField(max_length=15, verbose_name='Phone')
@@ -59,7 +61,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     objects = AccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username', 'password']
 
     class Meta:
         verbose_name = 'Account'
@@ -116,5 +118,11 @@ class Account(AbstractBaseUser, PermissionsMixin):
     def active(self):
         return self.is_active
     active.boolean = True
+
+    def get_absolute_url(self):
+        return reverse('account-detail', kwargs={
+            'email': self.email.replace('/', '-'),
+            'pk': self.id
+        })
 
 

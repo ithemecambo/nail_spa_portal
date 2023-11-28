@@ -1,4 +1,6 @@
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import models
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from account.models import Account
 
@@ -62,12 +64,21 @@ class Shop(BaseModel):
             return '__'
     shop_logo_photo.short_description = 'Logo'
 
+    def get_absolute_url(self):
+        return reverse('job-detail', kwargs={
+            'shop_name': self.shop_name.replace('/', '-'),
+            'pk': self.id
+        })
+
 
 class Service(BaseModel):
     parent = models.ForeignKey('Service', related_name='children', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, blank=False, null=False, verbose_name='Name')
+    price = models.FloatField(blank=True, null=True, verbose_name='Price')
+    symbol = models.CharField(max_length=2, blank=True, null=True, verbose_name='Symbol')
     photo_url = models.ImageField(upload_to='services/%Y-%m-%d/', verbose_name='Photo',
                                   help_text='Allows size is 20MB', blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name='Description')
 
     class Meta:
         verbose_name = "Service"
@@ -76,7 +87,7 @@ class Service(BaseModel):
         # ordering = ('id',)
 
     def __str__(self):
-        return f'{self.parent} {self.name}'
+        return f'{self.name}'
 
     def service_photo(self):
         if self.photo_url:
@@ -84,6 +95,24 @@ class Service(BaseModel):
         else:
             return '__'
     service_photo.short_description = 'Logo'
+
+    def service_name(self):
+        if self.price is None:
+            return self.name.upper()
+        else:
+            return self.name.title()
+    service_name.short_description = 'Name'
+
+    def service_price(self):
+        if self.price is not None and self.symbol is not None:
+            dollars = round(int(self.price), 0)
+            return "${}{}".format(dollars, self.symbol)
+        elif self.price is not None and self.symbol is None:
+            dollars = round(int(self.price), 0)
+            return "${}".format(dollars)
+        else:
+            return ''
+    service_price.short_description = 'Price'
 
 
 class Gallery(BaseModel):

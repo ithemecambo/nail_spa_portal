@@ -6,8 +6,8 @@ from shop.models import *
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceCreateForm
     model = Service
-    list_display = ['service_photo', 'name', 'status']
-    list_display_links = ['service_photo', 'name']
+    list_display = ['service_photo', 'service_name', 'service_price', 'status']
+    list_display_links = ['service_photo', 'service_name']
     list_filter = ['created_at', 'status']
     search_fields = ['name']
     ordering = ['id']
