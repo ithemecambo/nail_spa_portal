@@ -20,6 +20,7 @@ class ShopCreateForm(forms.ModelForm):
         model = Shop
         fields = [
             'users',
+            'services',
             'shop_name',
             'website',
             'tel',
@@ -51,4 +52,7 @@ class GalleryCreateForm(forms.ModelForm):
         fields = ['photo_url']
 
 
-
+class PromotionCreateForm(forms.ModelForm):
+    class Meta:
+        model = Promotion
+        fields = ['service_id', 'title', 'subtitle', 'discount', 'color', 'photo_url']

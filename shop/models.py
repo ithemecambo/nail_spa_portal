@@ -21,9 +21,59 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Service(BaseModel):
+    parent = models.ForeignKey('Service', related_name='children', on_delete=models.CASCADE,
+                               null=True, blank=True, db_index=True)
+    name = models.CharField(max_length=100, blank=False, null=False, verbose_name='Name')
+    price = models.FloatField(blank=True, null=True, verbose_name='Price')
+    symbol = models.CharField(max_length=2, blank=True, null=True, verbose_name='Symbol')
+    photo_url = models.ImageField(upload_to='services/%Y-%m-%d/', verbose_name='Photo',
+                                  help_text='Allows size is 20MB', blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name='Description')
+
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = 'Services'
+        unique_together = ('name',)
+        # ordering = ('id',)
+
+    def __str__(self):
+        full_path = [self.name]
+        k = self.parent
+        while k is not None:
+            full_path.append(k.name)
+            k = k.parent
+        return ' -> '.join(full_path[::-1])
+
+    def service_photo(self):
+        if self.photo_url:
+            return mark_safe('<img src="%s" style="width: 25px; height: 25px;"/>' % self.photo_url.url)
+        else:
+            return '__'
+    service_photo.short_description = 'Logo'
+
+    def service_name(self):
+        if self.price is None:
+            return self.name.upper()
+        else:
+            return self.name.title()
+    service_name.short_description = 'Name'
+
+    def service_price(self):
+        if self.price is not None and self.symbol is not None:
+            dollars = round(int(self.price), 0)
+            return "${}{}".format(dollars, self.symbol)
+        elif self.price is not None and self.symbol is None:
+            dollars = round(int(self.price), 0)
+            return "${}".format(dollars)
+        else:
+            return ''
+    service_price.short_description = 'Price'
+
+
 class Shop(BaseModel):
-    # user_id = models.ForeignKey(Account, on_delete=models.CASCADE,  verbose_name='User')
     users = models.ManyToManyField(Account, verbose_name='User')
+    services = models.ManyToManyField(Service, verbose_name='Service')
     shop_name = models.CharField(max_length=100, blank=False, null=False, verbose_name='Shop Name')
     tel = models.CharField(max_length=20, blank=False, null=False, verbose_name='Tel')
     fax = models.CharField(max_length=20, blank=False, null=False, verbose_name='Fax')
@@ -71,52 +121,8 @@ class Shop(BaseModel):
         })
 
 
-class Service(BaseModel):
-    parent = models.ForeignKey('Service', related_name='children', on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=100, blank=False, null=False, verbose_name='Name')
-    price = models.FloatField(blank=True, null=True, verbose_name='Price')
-    symbol = models.CharField(max_length=2, blank=True, null=True, verbose_name='Symbol')
-    photo_url = models.ImageField(upload_to='services/%Y-%m-%d/', verbose_name='Photo',
-                                  help_text='Allows size is 20MB', blank=True, null=True)
-    description = models.TextField(blank=True, null=True, verbose_name='Description')
-
-    class Meta:
-        verbose_name = "Service"
-        verbose_name_plural = 'Services'
-        unique_together = ('name',)
-        # ordering = ('id',)
-
-    def __str__(self):
-        return f'{self.name}'
-
-    def service_photo(self):
-        if self.photo_url:
-            return mark_safe('<img src="%s" style="width: 25px; height: 25px;"/>' % self.photo_url.url)
-        else:
-            return '__'
-    service_photo.short_description = 'Logo'
-
-    def service_name(self):
-        if self.price is None:
-            return self.name.upper()
-        else:
-            return self.name.title()
-    service_name.short_description = 'Name'
-
-    def service_price(self):
-        if self.price is not None and self.symbol is not None:
-            dollars = round(int(self.price), 0)
-            return "${}{}".format(dollars, self.symbol)
-        elif self.price is not None and self.symbol is None:
-            dollars = round(int(self.price), 0)
-            return "${}".format(dollars)
-        else:
-            return ''
-    service_price.short_description = 'Price'
-
-
 class Gallery(BaseModel):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name='Shop')
+    shop_id = models.ForeignKey(Shop, related_name='galleries', on_delete=models.CASCADE, verbose_name='Shop')
     photo_url = models.ImageField(upload_to='shops/shops/galleries/%Y-%m-%d/', verbose_name='Photo',
                                   blank=True, null=True, help_text='Allow size is 20MB')
 
@@ -136,7 +142,7 @@ class Gallery(BaseModel):
 
 
 class BusinessHour(BaseModel):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name='Shop')
+    shop_id = models.ForeignKey(Shop, related_name='business_hours', on_delete=models.CASCADE, verbose_name='Shop')
     day = models.CharField(max_length=25, blank=False, null=False, verbose_name='Day')
     hour = models.CharField(max_length=25, blank=False, null=False, verbose_name='Hour')
 
@@ -190,15 +196,15 @@ class Notification(BaseModel):
 
 
 class Promotion(BaseModel):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name='Shop')
+    shop_id = models.ForeignKey(Shop, related_name='promotions', on_delete=models.CASCADE, verbose_name='Shop')
     service_id = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Service')
     title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Title')
     subtitle = models.CharField(max_length=250, blank=False, null=False, verbose_name='SubTitle')
+    discount = models.FloatField(null=False, blank=False, verbose_name='Discount')
     color = models.CharField(max_length=10, blank=False, null=False, verbose_name='Color',
                              help_text='Hex Color [Ex: #C3C3C3]', default='#')
     photo_url = models.ImageField(upload_to='shops/promotions/%Y-%m-%d/', verbose_name='Photo URL',
                                   blank=False, null=False, help_text='Allow size is 10MB')
-    description = models.TextField(blank=True, null=True, verbose_name='Description')
 
     class Meta:
         verbose_name = 'Promotion'

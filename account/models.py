@@ -40,17 +40,11 @@ class AccountManager(BaseUserManager):
 class Account(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, null=True, verbose_name='First Name')
     last_name = models.CharField(max_length=30, null=True, verbose_name='Last Name')
-    nickname = models.CharField(max_length=30, verbose_name='Nickname')
     gender = models.CharField(choices=USER_GENDER_CHOICES, default='Male', max_length=10, verbose_name='Gender')
     username = models.CharField(max_length=50, blank=False, null=False, verbose_name='Username')
     email = models.EmailField(unique=True, null=False, verbose_name='Email')
     password = models.CharField(max_length=128, verbose_name='Password')
     phone = models.CharField(max_length=15, verbose_name='Phone')
-    fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
-    ssn = models.CharField(max_length=15, blank=False, null=False, verbose_name='Social Security Number')
-    photo_url = models.ImageField(upload_to='users/avatars/%Y-%m-%d/', blank=True, null=True, verbose_name='Photo',
-                                  help_text='Allowed size is 10MB')
-    address = models.CharField(max_length=250, verbose_name='Address')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Date Joined')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
     updated_at = models.DateTimeField(auto_now=True, null=True, verbose_name='Updated Date')
@@ -79,13 +73,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    def profile(self):
-        if self.photo_url:
-            return mark_safe('<img src="%s" style="width: 26px; height: 25px; border-radius: 100px; "/>' % self.photo_url.url)
-        else:
-            return '__'
-    profile.short_description = 'Profile'
-
     def get_phone(self):
         if self.phone == '':
             return '__'
@@ -95,11 +82,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
         if self.email == '':
             return '__'
         return f'{self.email}'
-
-    def get_fax(self):
-        if self.fax == '':
-            return '__'
-        return f'{self.fax}'
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
@@ -124,5 +106,47 @@ class Account(AbstractBaseUser, PermissionsMixin):
             'email': self.email.replace('/', '-'),
             'pk': self.id
         })
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(Account, on_delete=models.CASCADE)
+    address = models.CharField(max_length=250, verbose_name='Address')
+    city = models.CharField(max_length=20, blank=True, null=True, verbose_name='City')
+    state = models.CharField(max_length=20, blank=True, null=True, verbose_name='State')
+    zipcode = models.CharField(max_length=20, blank=True, null=True, verbose_name='Zip Code')
+    status = models.BooleanField(default=True)
+    photo_url = models.ImageField(upload_to='users/profiles/%Y-%m-%d/', blank=True, null=True,
+                              verbose_name='Photo', help_text='Allowed size is 10MG')
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+    def profile(self):
+        if self.photo_url:
+            return mark_safe('<img src="%s" style="width: 26px; height: 25px; border-radius: 100px; "/>' % self.photo_url.url)
+        else:
+            return '__'
+    profile.short_description = 'Profile'
+
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(Account, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=30, verbose_name='Nickname')
+    fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
+    ssn = models.CharField(max_length=15, blank=False, null=False, verbose_name='Social Security Number')
+    address = models.CharField(max_length=250, verbose_name='Address')
+    status = models.BooleanField(default=True)
+    photo_url = models.ImageField(upload_to='users/avatars/%Y-%m-%d/', blank=True, null=True,
+                              verbose_name='Photo', help_text='Allowed size is 10MG')
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+    def profile(self):
+        if self.photo_url:
+            return mark_safe('<img src="%s" style="width: 26px; height: 25px; border-radius: 100px; "/>' % self.photo_url.url)
+        else:
+            return '__'
+    profile.short_description = 'Profile'
 
 

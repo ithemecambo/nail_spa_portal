@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from account.forms import *
-from account.models import Account
+from account.models import *
 
 
 class AccountAdmin(UserAdmin):
@@ -10,17 +10,16 @@ class AccountAdmin(UserAdmin):
     model = Account
 
     list_display = [
-        'profile',
+        'username',
         'get_full_name',
         'phone',
-        'fax',
         'email',
         'admin',
         'staff',
         'active',
     ]
     list_display_links = [
-        'profile',
+        'username',
         'get_full_name',
         'phone',
         'email',
@@ -40,13 +39,13 @@ class AccountAdmin(UserAdmin):
     ]
     list_per_page = 10
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'nickname', 'gender', 'phone', 'fax', 'ssn', 'address', 'photo_url')}),
+        (None, {'fields': ('first_name', 'last_name', 'gender', 'phone')}),
         ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_active')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'nickname', 'gender', 'phone', 'fax', 'ssn', 'address', 'photo_url', 'username', 'email',
+            'fields': ('first_name', 'last_name', 'gender', 'phone', 'username', 'email',
                        'password1', 'password2', 'is_admin', 'is_staff', 'is_active')}
          ),
     )
@@ -57,3 +56,5 @@ class AccountAdmin(UserAdmin):
 
 
 admin.site.register(Account, AccountAdmin)
+admin.site.register(StaffProfile)
+admin.site.register(Profile)

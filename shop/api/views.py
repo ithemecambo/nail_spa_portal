@@ -1,6 +1,9 @@
+from rest_framework.response import Response
+
 from . import serializers
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from shop.models import *
+from .serializers import ServiceSerializer
 
 
 class ShopViewSet(generics.ListAPIView):
@@ -10,5 +13,7 @@ class ShopViewSet(generics.ListAPIView):
 
 class ServiceViewSet(generics.ListAPIView):
     serializer_class = serializers.ServiceSerializer
-    queryset = Service.objects.all()
+    queryset = Service.objects.filter(parent=None).order_by('parent')
+
+
 

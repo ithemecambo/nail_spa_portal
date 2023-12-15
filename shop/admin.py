@@ -6,6 +6,7 @@ from shop.models import *
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceCreateForm
     model = Service
+    list_select_related = ['parent']
     list_display = ['service_photo', 'service_name', 'service_price', 'status']
     list_display_links = ['service_photo', 'service_name']
     list_filter = ['created_at', 'status']
@@ -24,6 +25,12 @@ class BusinessHourLevelInlineAdmin(admin.TabularInline):
 class GalleryLevelInlineAdmin(admin.TabularInline):
     form = GalleryCreateForm
     model = Gallery
+    extra = 0
+
+
+class PromotionLevelInlineAdmin(admin.StackedInline):
+    form = PromotionCreateForm
+    model = Promotion
     extra = 0
 
 
@@ -59,6 +66,7 @@ class ShopAdmin(admin.ModelAdmin):
     ]
 
     inlines = [
+        PromotionLevelInlineAdmin,
         BusinessHourLevelInlineAdmin,
         GalleryLevelInlineAdmin
     ]
