@@ -15,3 +15,4 @@ class AccountUpdateForm(UserChangeForm):
         fields = [
             'email'
         ]
+

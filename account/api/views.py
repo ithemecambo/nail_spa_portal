@@ -1,4 +1,4 @@
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import *
@@ -7,7 +7,7 @@ from . import serializers
 
 
 class AccountViewSet(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, FileUploadParser]
 
     def get_object(self, pk):
@@ -17,7 +17,7 @@ class AccountViewSet(APIView):
             return None
 
     def get(self, request, *args, **kwargs):
-        accounts = Account.objects.all()
+        accounts = Account.objects.filter(is_staff=True)
         serializer = serializers.AccountSerializer(accounts, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -73,3 +73,9 @@ class AccountViewSet(APIView):
         instance.delete()
         return Response({'data': 'Account was deleted from system.'},
                         status=status.HTTP_200_OK)
+
+
+class StaffViewSet(generics.ListAPIView):
+    serializer_class = serializers.StaffSerializer
+    queryset = StaffProfile.objects.all()
+

@@ -15,7 +15,7 @@ class AccountAdmin(UserAdmin):
         'phone',
         'email',
         'admin',
-        'staff',
+        'is_staff',
         'active',
     ]
     list_display_links = [
@@ -55,6 +55,10 @@ class AccountAdmin(UserAdmin):
     ]
 
 
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ['profile', 'name', 'nickname', 'fax', 'ssn']
+
+
 admin.site.register(Account, AccountAdmin)
-admin.site.register(StaffProfile)
+admin.site.register(StaffProfile, StaffAdmin)
 admin.site.register(Profile)

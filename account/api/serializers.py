@@ -7,3 +7,16 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    user = AccountSerializer(read_only=True)
+    class Meta:
+        model = StaffProfile
+        fields = '__all__'
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'

@@ -19,7 +19,7 @@ class ShopCreateForm(forms.ModelForm):
     class Meta:
         model = Shop
         fields = [
-            'users',
+            'staffs',
             'services',
             'shop_name',
             'website',
@@ -56,3 +56,15 @@ class PromotionCreateForm(forms.ModelForm):
     class Meta:
         model = Promotion
         fields = ['service_id', 'title', 'subtitle', 'discount', 'color', 'photo_url']
+
+
+class PlatformCreateForm(forms.ModelForm):
+    class Meta:
+        model = Platform
+        fields = ['platform_name', 'device', 'ip', 'uuid']
+
+
+class NotificationCreateForm(forms.ModelForm):
+    class Meta:
+        model = Notification
+        fields = ['platform_id', 'title', 'subtitle', 'photo_url', 'message']

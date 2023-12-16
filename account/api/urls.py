@@ -6,6 +6,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import (
     AccountViewSet,
+    StaffViewSet,
 )
 
 app_name = 'account'
@@ -21,4 +22,9 @@ urlpatterns = [
     path('accounts/', AccountViewSet.as_view(), name=None),
     path('account-detail/<email>'+f"{secrets.token_hex(6)}"+'<int:pk>/',
          AccountViewSet.as_view(), name='account-detail'),
+
+    path('getUsers/', StaffViewSet.as_view(), name='getUsers'),
+
+
+
 ]

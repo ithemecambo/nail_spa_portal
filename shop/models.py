@@ -2,7 +2,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from account.models import Account
+from account.models import Account, StaffProfile
 
 DEVICE_CHOICES = (
     ('All', 'All'),
@@ -30,6 +30,7 @@ class Service(BaseModel):
     photo_url = models.ImageField(upload_to='services/%Y-%m-%d/', verbose_name='Photo',
                                   help_text='Allows size is 20MB', blank=True, null=True)
     description = models.TextField(blank=True, null=True, verbose_name='Description')
+    is_selected = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Service"
@@ -72,7 +73,7 @@ class Service(BaseModel):
 
 
 class Shop(BaseModel):
-    users = models.ManyToManyField(Account, verbose_name='User')
+    staffs = models.ManyToManyField(StaffProfile, verbose_name='Staff')
     services = models.ManyToManyField(Service, verbose_name='Service')
     shop_name = models.CharField(max_length=100, blank=False, null=False, verbose_name='Shop Name')
     tel = models.CharField(max_length=20, blank=False, null=False, verbose_name='Tel')
@@ -160,7 +161,7 @@ class Platform(BaseModel):
     platform_name = models.CharField(choices=DEVICE_CHOICES, max_length=15, default='All',
                                      verbose_name='Platform Name')
     ip = models.CharField(max_length=20, blank=False, null=False, verbose_name='IP Address')
-    device = models.CharField(max_length=20, blank=False, null=False, verbose_name='Device')
+    device = models.CharField(max_length=100, blank=False, null=False, verbose_name='Device')
     uuid = models.CharField(max_length=250, blank=False, null=False, verbose_name='UUID')
 
     class Meta:

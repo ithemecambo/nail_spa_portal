@@ -109,7 +109,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE)
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile')
     address = models.CharField(max_length=250, verbose_name='Address')
     city = models.CharField(max_length=20, blank=True, null=True, verbose_name='City')
     state = models.CharField(max_length=20, blank=True, null=True, verbose_name='State')
@@ -130,17 +130,21 @@ class Profile(models.Model):
 
 
 class StaffProfile(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE)
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='staff')
     nickname = models.CharField(max_length=30, verbose_name='Nickname')
     fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
     ssn = models.CharField(max_length=15, blank=False, null=False, verbose_name='Social Security Number')
     address = models.CharField(max_length=250, verbose_name='Address')
+    color = models.CharField(max_length=10, default='#')
     status = models.BooleanField(default=True)
     photo_url = models.ImageField(upload_to='users/avatars/%Y-%m-%d/', blank=True, null=True,
                               verbose_name='Photo', help_text='Allowed size is 10MG')
 
     def __str__(self):
-        return f'{self.user.username}'
+        return f'{self.nickname}'
+
+    def name(self):
+        return f'{self.user.first_name} {self.user.first_name}'
 
     def profile(self):
         if self.photo_url:

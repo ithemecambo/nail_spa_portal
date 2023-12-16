@@ -75,5 +75,27 @@ class ShopAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 
-admin.site.register(Service, ServiceAdmin)
+class PlatformAdmin(admin.ModelAdmin):
+    form = PlatformCreateForm
+    list_display = ['platform_name', 'device', 'ip', 'uuid']
+    list_display_links = ['platform_name', 'device', 'ip']
+    list_filter = ['created_at', 'status']
+    search_fields = ['platform_name', 'device']
+    ordering = ['created_at']
+    list_per_page = 10
+
+
+class NotificationAdmin(admin.ModelAdmin):
+    form = NotificationCreateForm
+    list_display = ['banner_notification_photo', 'platform_id', 'title', 'subtitle']
+    list_display_links = ['banner_notification_photo', 'platform_id', 'title']
+    list_filter = ['created_at', 'status']
+    search_fields = ['title', 'subtitle']
+    ordering = ['created_at']
+    list_per_page = 10
+
+
 admin.site.register(Shop, ShopAdmin)
+admin.site.register(Service, ServiceAdmin)
+admin.site.register(Platform, PlatformAdmin)
+admin.site.register(Notification, NotificationAdmin)
