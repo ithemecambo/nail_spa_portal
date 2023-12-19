@@ -12,9 +12,14 @@ class TimeSlotCreateForm(forms.ModelForm):
 
 
 class YearOfDateCreateForm(forms.ModelForm):
+    time_slots = forms.ModelMultipleChoiceField(queryset=TimeSlot.objects.all())
     class Meta:
         model = YearOfWeekDay
         fields = ['week_day', 'time_slots']
+
+    # def __init__(self, *args, **kwargs):
+    #     forms.ModelForm.__init__(self, *args, **kwargs)
+    #     self.fields['time_slots'].queryset = TimeSlot
 
 
 class DatePickerWidget(forms.DateInput):

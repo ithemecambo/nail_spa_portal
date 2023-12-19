@@ -20,3 +20,16 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['phone', 'bio', 'address', 'city', 'state', 'zipcode', 'photo_url']
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer(many=True)
+    class Meta:
+        model = Account
+
+

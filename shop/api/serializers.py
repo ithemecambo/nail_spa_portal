@@ -42,7 +42,7 @@ class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ['id', 'parent', 'name', 'price', 'symbol', 'photo_url',
-                  'is_selected', 'description']
+                  'is_selected', 'description',]
 
 
 class StaffSerializer(serializers.ModelSerializer):

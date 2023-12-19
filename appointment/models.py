@@ -26,7 +26,7 @@ class YearOfWeekDay(BaseModel):
         ordering = ['created_at']
 
     def __str__(self):
-        return f'{self.week_day}'
+        return f'{self.time_slots}'
 
 
 APPOINTMENT_STATUS_CHOICES = (
@@ -61,8 +61,8 @@ class Appointment(BaseModel):
 
 class Booking(BaseModel):
     appointment_id = models.ForeignKey(Appointment, on_delete=models.CASCADE,
-                                       verbose_name='Booking')
-    packages = models.ManyToManyField(Service, verbose_name='Booking Service')
+                                       verbose_name='Booking', related_name='bookings')
+    packages = models.ManyToManyField(Service, verbose_name='Booking Service', related_name='bookings')
 
     class Meta:
         verbose_name = 'Booking'

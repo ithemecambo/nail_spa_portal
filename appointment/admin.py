@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.forms import CheckboxSelectMultiple
+
 from appointment.forms import *
 
 
@@ -13,8 +15,13 @@ class TimeSlotAdmin(admin.ModelAdmin):
 class YearOfWeekDayAdmin(admin.ModelAdmin):
     form = YearOfDateCreateForm
     list_display = ['week_day', ]
-    list_display_links = ['week_day']
-    list_per_page = 12
+    # list_display_links = ['week_day']
+    # list_per_page = 12
+    filter_horizontal = ['time_slots']
+
+    # formfield_overrides = {
+    #     models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    # }
 
 
 class AppointmentAdmin(admin.ModelAdmin):
