@@ -58,7 +58,7 @@ class NotificationViewSet(APIView):
         serializer = serializers.NotificationSerializer(notifications, many=True)
         notification_data = {
             'status': True,
-            'results': serializer.data
+            'result': serializer.data
         }
         return Response(data=notification_data, status=status.HTTP_200_OK)
 

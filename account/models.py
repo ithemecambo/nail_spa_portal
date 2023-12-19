@@ -40,11 +40,9 @@ class AccountManager(BaseUserManager):
 class Account(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, null=True, verbose_name='First Name')
     last_name = models.CharField(max_length=30, null=True, verbose_name='Last Name')
-    gender = models.CharField(choices=USER_GENDER_CHOICES, default='Male', max_length=10, verbose_name='Gender')
     username = models.CharField(max_length=50, blank=False, null=False, verbose_name='Username')
     email = models.EmailField(unique=True, null=False, verbose_name='Email')
     password = models.CharField(max_length=128, verbose_name='Password')
-    phone = models.CharField(max_length=15, verbose_name='Phone')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Date Joined')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
     updated_at = models.DateTimeField(auto_now=True, null=True, verbose_name='Updated Date')
@@ -55,8 +53,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     objects = AccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'password']
-
+    REQUIRED_FIELDS = []
+    # 'username', 'password'
     class Meta:
         verbose_name = 'Account'
         verbose_name_plural = 'Accounts'
@@ -72,11 +70,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def get_phone(self):
-        if self.phone == '':
-            return '__'
-        return f'{self.phone}'
 
     def get_email(self):
         if self.email == '':
@@ -110,6 +103,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile')
+    phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Phone')
+    bio = models.TextField(blank=True, null=True, verbose_name='Bio')
     address = models.CharField(max_length=250, verbose_name='Address')
     city = models.CharField(max_length=20, blank=True, null=True, verbose_name='City')
     state = models.CharField(max_length=20, blank=True, null=True, verbose_name='State')
@@ -120,6 +115,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username}'
+
+    def name(self):
+        return f'{self.user.first_name} {self.user.first_name}'
 
     def profile(self):
         if self.photo_url:
@@ -132,12 +130,13 @@ class Profile(models.Model):
 class StaffProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='staff')
     nickname = models.CharField(max_length=30, verbose_name='Nickname')
+    phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Phone')
     fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
     ssn = models.CharField(max_length=15, blank=False, null=False, verbose_name='Social Security Number')
     address = models.CharField(max_length=250, verbose_name='Address')
     color = models.CharField(max_length=10, default='#')
     status = models.BooleanField(default=True)
-    photo_url = models.ImageField(upload_to='users/avatars/%Y-%m-%d/', blank=True, null=True,
+    photo_url = models.ImageField(upload_to='users/staffs/%Y-%m-%d/', blank=True, null=True,
                               verbose_name='Photo', help_text='Allowed size is 10MG')
 
     def __str__(self):

@@ -178,12 +178,13 @@ class Notification(BaseModel):
     title = models.CharField(max_length=100, verbose_name='Title')
     subtitle = models.CharField(max_length=250, verbose_name='Sub Title')
     photo_url = models.ImageField(upload_to='shops/notifications/%Y-%m-%d/', verbose_name='Photo URL',
-                                  help_text='Allowed size is 20MB', blank=False, null=False)
+                                  help_text='Allowed size is 20MB', blank=True, null=True)
     message = models.TextField(blank=True, null=True, verbose_name='Message')
 
     class Meta:
         verbose_name = 'Notification'
         verbose_name_plural = 'Notifications'
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.title}'
@@ -205,7 +206,7 @@ class Promotion(BaseModel):
     color = models.CharField(max_length=10, blank=False, null=False, verbose_name='Color',
                              help_text='Hex Color [Ex: #C3C3C3]', default='#')
     photo_url = models.ImageField(upload_to='shops/promotions/%Y-%m-%d/', verbose_name='Photo URL',
-                                  blank=False, null=False, help_text='Allow size is 10MB')
+                                  blank=True, null=True, help_text='Allow size is 10MB')
 
     class Meta:
         verbose_name = 'Promotion'

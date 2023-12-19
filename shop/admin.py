@@ -81,7 +81,7 @@ class PlatformAdmin(admin.ModelAdmin):
     list_display_links = ['platform_name', 'device', 'ip']
     list_filter = ['created_at', 'status']
     search_fields = ['platform_name', 'device']
-    ordering = ['created_at']
+    ordering = ['-created_at']
     list_per_page = 10
 
 
@@ -91,7 +91,7 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display_links = ['banner_notification_photo', 'platform_id', 'title']
     list_filter = ['created_at', 'status']
     search_fields = ['title', 'subtitle']
-    ordering = ['created_at']
+    ordering = ['-created_at']
     list_per_page = 10
 
 

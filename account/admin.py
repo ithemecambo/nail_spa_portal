@@ -12,7 +12,6 @@ class AccountAdmin(UserAdmin):
     list_display = [
         'username',
         'get_full_name',
-        'phone',
         'email',
         'admin',
         'is_staff',
@@ -21,7 +20,6 @@ class AccountAdmin(UserAdmin):
     list_display_links = [
         'username',
         'get_full_name',
-        'phone',
         'email',
     ]
     list_filter = [
@@ -37,15 +35,15 @@ class AccountAdmin(UserAdmin):
         'fax',
         'email'
     ]
-    list_per_page = 10
+    list_per_page = 12
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'gender', 'phone')}),
+        (None, {'fields': ('first_name', 'last_name', 'username')}),
         ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_active')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'gender', 'phone', 'username', 'email',
+            'fields': ('first_name', 'last_name', 'username', 'email',
                        'password1', 'password2', 'is_admin', 'is_staff', 'is_active')}
          ),
     )
@@ -57,8 +55,17 @@ class AccountAdmin(UserAdmin):
 
 class StaffAdmin(admin.ModelAdmin):
     list_display = ['profile', 'name', 'nickname', 'fax', 'ssn']
+    list_display_links = ['profile', 'name', 'nickname', 'fax', 'ssn']
+    ordering = ['nickname',]
+    list_per_page = 12
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['profile', 'name', 'phone', 'city', 'state', 'zipcode']
+    list_display_links = ['profile', 'name', 'phone', 'city']
+    list_per_page = 12
 
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(StaffProfile, StaffAdmin)
-admin.site.register(Profile)
+admin.site.register(Profile, ProfileAdmin)

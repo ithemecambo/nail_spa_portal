@@ -26,7 +26,7 @@ urlpatterns = [
 
     path('api/v1/', include('shop.api.urls')),
     path('api/v1/', include('account.api.urls')),
-    # path('api/v1/', include('appointment.api.urls')),
+    path('api/v1/', include('appointment.api.urls')),
 ]
 
 if settings.DEBUG:

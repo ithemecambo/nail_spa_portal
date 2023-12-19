@@ -5,6 +5,18 @@ from django.contrib.admin.widgets import AdminTimeWidget, FilteredSelectMultiple
 from appointment.models import *
 
 
+class TimeSlotCreateForm(forms.ModelForm):
+    class Meta:
+        model = TimeSlot
+        fields = ['time']
+
+
+class YearOfDateCreateForm(forms.ModelForm):
+    class Meta:
+        model = YearOfWeekDay
+        fields = ['week_day', 'time_slots']
+
+
 class DatePickerWidget(forms.DateInput):
     DATA_INPUT_WIDGET_REQUIRED_FORMAT = '%Y-%m-%d'
 

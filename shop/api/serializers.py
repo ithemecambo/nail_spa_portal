@@ -46,6 +46,7 @@ class PackageSerializer(serializers.ModelSerializer):
 
 
 class StaffSerializer(serializers.ModelSerializer):
+    user = AccountSerializer(read_only=True)
     class Meta:
         model = StaffProfile
         fields = '__all__'
