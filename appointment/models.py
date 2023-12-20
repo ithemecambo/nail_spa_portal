@@ -45,7 +45,7 @@ class Appointment(BaseModel):
     profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Profile',
                                    related_name='appointments')
     booking_day = models.DateField(verbose_name='Booking Day')
-    booking_time = models.ForeignKey(YearOfWeekDay, on_delete=models.CASCADE, verbose_name='Booking Time')
+    booking_time = models.CharField(max_length=10, verbose_name='Booking Time')
     amount = models.FloatField(blank=False, null=False, verbose_name='Amount', default=0)
     notes = models.TextField(verbose_name='Notes', blank=True, null=True)
     appointment_status = models.CharField(choices=APPOINTMENT_STATUS_CHOICES, max_length=30, default='Upcoming',
@@ -54,9 +54,10 @@ class Appointment(BaseModel):
     class Meta:
         verbose_name = 'Appointment'
         verbose_name_plural = 'Appointments'
+        ordering = ['-booking_day', 'booking_time']
 
     def __str__(self):
-        return f'{self.shop_id}\t|\t{self.booking_day}'
+        return f'{self.booking_day}\t|\t{self.booking_time}'
 
 
 class Booking(BaseModel):
@@ -67,6 +68,7 @@ class Booking(BaseModel):
     class Meta:
         verbose_name = 'Booking'
         verbose_name_plural = 'Bookings'
+        unique_together = ['appointment_id']
 
     def __str__(self):
         return f'{self.appointment_id.__str__()}'

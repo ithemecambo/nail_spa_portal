@@ -34,6 +34,7 @@ class AppointmentAdmin(admin.ModelAdmin):
         '__str__',
         'status',
     ]
+    ordering = ['-booking_day']
 
 
 admin.site.register(Appointment, AppointmentAdmin)
