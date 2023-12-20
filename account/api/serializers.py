@@ -17,6 +17,7 @@ class StaffSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = AccountSerializer(read_only=True)
     class Meta:
         model = Profile
         fields = '__all__'
@@ -26,6 +27,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['phone', 'bio', 'address', 'city', 'state', 'zipcode', 'photo_url']
+
 
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(many=True)

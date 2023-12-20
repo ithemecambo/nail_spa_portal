@@ -91,7 +91,6 @@ class ViewerBookingViewSet(generics.ListAPIView):
 
 class AppointmentViewByWeekDayViewSet(APIView):
     def get(self, request, *args, **kwargs):
-        print(kwargs.get('week_day'))
         years = YearOfWeekDay.objects.filter(week_day=kwargs.get('week_day'))
         staffs = StaffProfile.objects.all()
         time_slots = YearOfWeekDaySerializer(years, many=True)
@@ -108,7 +107,7 @@ class AppointmentViewByWeekDayViewSet(APIView):
         #     'header': 'Service',
         #     'items': {'services': []}
         # }
-
+        print(staff_data.data)
         response_data = {}
         response_data['time_slots'] = time_slots.data
         response_data['nail_specialists'] = staff_data.data
@@ -117,3 +116,8 @@ class AppointmentViewByWeekDayViewSet(APIView):
         # response_data.append(staff_data)
         # response_data.append(service_data)
         return Response(data=response_data, status=status.HTTP_200_OK)
+
+
+class ViewAccountViewSet(generics.ListAPIView):
+    serializer_class = ViewerStaffSerializer
+    queryset = StaffProfile.objects.all()

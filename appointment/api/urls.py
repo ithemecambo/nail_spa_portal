@@ -6,6 +6,7 @@ from .views import (
     BookingViewSet,
     ViewerBookingViewSet,
     AppointmentViewByWeekDayViewSet,
+    ViewAccountViewSet
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('appointment/', AppointmentViewSet.as_view(), name='appointment'),
     path('booking/', BookingViewSet.as_view(), name='booking'),
     path('getBookings/', ViewerBookingViewSet.as_view(), name='bookings'),
+    path('staffs/', ViewAccountViewSet.as_view(), name='staffs')
 ]
