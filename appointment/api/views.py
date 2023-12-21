@@ -49,21 +49,42 @@ class AppointmentViewSet(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        data = {
-            'shop_id': request.data.get('shop_id'),
-            'staff_id': request.data.get('staff_id'),
-            'profile_id': request.data.get('profile_id'),
-            'booking_day': request.data.get('booking_day'),
-            'booking_time': request.data.get('booking_time'),
-            'notes': request.data.get('notes'),
-            'appointment_status': request.data.get('appointment_status')
-        }
-        serializer = AppointmentSerializer(data=data)
+        # data = {
+        #     'shop_id': request.data.get('shop_id'),
+        #     'staff_id': request.data.get('staff_id'),
+        #     'profile_id': request.data.get('profile_id'),
+        #     'booking_day': request.data.get('booking_day'),
+        #     'booking_time': request.data.get('booking_time'),
+        #     'full_name': request.data.get('full_name'),
+        #     'phone': request.data.get('phone'),
+        #     'notes': request.data.get('notes'),
+        #     'appointment_status': request.data.get('appointment_status')
+        # }
+        serializer = AppointmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AppointmentDetailViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        appointment = Appointment.objects.get(pk=kwargs['id'])
+        serializer = AppointmentSerializer(appointment, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        appointment = Appointment.objects.get(pk=kwargs['id'])
+        serializer = AppointmentSerializer(appointment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        appointment = Appointment.objects.get(pk=kwargs['id']).delete()
+        return Response({'message': f'Appointment with ID :  {kwargs["id"]} is deleted'})
 
 
 class BookingViewSet(APIView):
@@ -73,10 +94,6 @@ class BookingViewSet(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # data = {
-        #     'appointment_id': request.data.get('appointment_id'),
-        #     'packages': request.data.get('packages')
-        # }
         serializer = BookingSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -95,29 +112,23 @@ class AppointmentViewByWeekDayViewSet(APIView):
         staffs = StaffProfile.objects.all()
         time_slots = YearOfWeekDaySerializer(years, many=True)
         staff_data = ViewerStaffSerializer(staffs, many=True)
-        # time_slot_data = {
-        #     'header': 'Time Slot',
-        #     'items': {'time_slots': time_slots.data}
-        # }
-        # staff_data = {
-        #     'header': 'Nail Specialist',
-        #     'items': {'nail_specialists': staff_data.data}
-        # }
-        # service_data = {
-        #     'header': 'Service',
-        #     'items': {'services': []}
-        # }
-        print(staff_data.data)
+
         response_data = {}
         response_data['time_slots'] = time_slots.data
         response_data['nail_specialists'] = staff_data.data
         response_data['services'] = []
-        # response_data.append(time_slot_data)
-        # response_data.append(staff_data)
-        # response_data.append(service_data)
         return Response(data=response_data, status=status.HTTP_200_OK)
 
 
 class ViewAccountViewSet(generics.ListAPIView):
     serializer_class = ViewerStaffSerializer
     queryset = StaffProfile.objects.all()
+
+
+class MyViewerBookingViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        print(kwargs.get('profile_id'))
+        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id'))
+        serializer = ViewerBookingSerializer(bookings, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+

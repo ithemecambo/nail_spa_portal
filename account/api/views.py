@@ -81,12 +81,11 @@ class StaffViewSet(generics.ListAPIView):
 
 
 class ProfileViewSet(APIView):
-
     def get(self, request, *args, **kwargs):
         profile = Profile.objects.filter(user=kwargs.get('id'))
-        print(not profile)
         if profile.exists():
             serializer = serializers.ProfileSerializer(profile, many=True)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(data={'Profile search not found! Please try to find another profiles.'}, status=status.HTTP_200_OK)
+        return Response(data={'message': 'Profile search not found! Please try to find another profiles.'},
+                        status=status.HTTP_200_OK)
 

@@ -47,9 +47,12 @@ class AppointmentCreateForm(forms.ModelForm):
         model = Appointment
         fields = [
             'shop_id',
+            'full_name',
+            'phone',
             'booking_day',
             'booking_time',
-            'amount'
+            'amount',
+            'notes'
         ]
         widget = {
             'booking_hour': AdminTimeWidget(format='%H:%M')
