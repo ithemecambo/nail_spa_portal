@@ -1,8 +1,10 @@
+from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import update_last_login
 from rest_framework import permissions, status, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -132,38 +134,6 @@ class ViewerUserProfileViewSet(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class LoginUserViewSet(APIView):
-    def post(self, request):
-        print(request.data)
-        serializer = serializers.LoginUserSerializer(data=request.data)
-        if serializer.is_valid():
-            username = serializer.validated_data["username"]
-            password = serializer.validated_data["password"]
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                token = Token.objects.get(user=user)
-                response = {
-                    "status": status.HTTP_200_OK,
-                    "message": "success",
-                    "data": {
-                        "Token": token.key
-                    }
-                }
-                return Response(response, status=status.HTTP_200_OK)
-            else:
-                response = {
-                    "status": status.HTTP_401_UNAUTHORIZED,
-                    "message": "Invalid Email or Password",
-                }
-                return Response(response, status=status.HTTP_401_UNAUTHORIZED)
-        response = {
-            "status": status.HTTP_400_BAD_REQUEST,
-            "message": "bad request",
-            "data": serializer.errors
-        }
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CustomLoginAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -182,10 +152,106 @@ class CustomLoginAuthToken(ObtainAuthToken):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ViewerTokenViewSet(APIView):
-    def get(self, request, *args, **kwargs):
-        print(kwargs['key'])
-        tokens = Token.objects.get(key=kwargs['key'])
-        serializer = serializers.TokenSerializer(tokens, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+class UpdateProfileViewSet(RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.UpdateProfileSerializer
+    queryset = Profile.objects.all()
 
+
+class UpdateProfileDetailAPIView(APIView):
+    parser_classes = [MultiPartParser, FormParser, FileUploadParser]
+
+    def put(self, request, id, *args, **kwargs):
+        if Profile.objects.filter(id=id).exists():
+            profile = Profile.objects.get(id=id)
+            data = {
+                'phone': request.data.get('phone'),
+                'bio': request.data.get('bio'),
+                'address': request.data.get('address'),
+                'city': request.data.get('city'),
+                'state': request.data.get('state'),
+                'zipcode': request.data.get('zipcode'),
+                'photo_url': request.data.get('photo_url')
+            }
+            serializer = serializers.UpdateProfileSerializer(instance=profile,
+                                                             data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Profile doesn't exists in our database."}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, id, *args, **kwargs):
+        if Profile.objects.filter(id=id).exists():
+            profile = Profile.objects.get(id=id)
+            data = {
+                'phone': request.data.get('phone'),
+                'bio': request.data.get('bio'),
+                'address': request.data.get('address'),
+                'city': request.data.get('city'),
+                'state': request.data.get('state'),
+                'zipcode': request.data.get('zipcode'),
+                'photo_url': request.data.get('photo_url')
+            }
+            serializer = serializers.UpdateProfileSerializer(instance=profile,
+                                                             data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Profile doesn't exists in our database."}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id, *args, **kwargs):
+        if Profile.objects.filter(id=id).exists():
+            profile = Profile.objects.get(id=id)
+            profile.delete()
+            return Response({"message": "Profile user was deleted from database."}, status=status.HTTP_200_OK)
+        return Response({"message": "Profile doesn't exists in our database."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FindAccountEmailViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        if Account.objects.filter(email=kwargs['email']).exists():
+            print(kwargs['email'])
+            account = Account.objects.filter(email=kwargs['email'])
+            serializer = serializers.FindAccountEmailSerializer(account, many=True)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response({'message': 'Your account does not exist. Please try an other emails.'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChangePasswordViewSet(generics.UpdateAPIView):
+    queryset = Account.objects.all()
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.ChangePasswordSerializer
+
+
+class ResetPasswordViewSet(APIView):
+    def get_object(self, pk):
+        try:
+            return Account.objects.get(pk=pk)
+        except Account.DoesNotExist:
+            return None
+
+    def put(self, request, pk, *args, **kwargs):
+        instance = self.get_object(pk)
+        if not instance:
+            return Response({'message': 'Account does not existing.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        data = {
+            'email': request.data.get('email'),
+            'password': request.data.get('password')
+        }
+        serializer = serializers.ResetPasswordSerializer(instance=instance, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutApiView(APIView):
+    def get(self, request):
+        request.user.auth_token.delete()
+        auth.logout(request)
+        return Response({'message': 'successfully deleted'})

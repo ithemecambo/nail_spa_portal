@@ -9,9 +9,9 @@ from shop.models import *
 
 
 class ShopViewSet(generics.ListAPIView):
-    serializer_class = serializers.ShopSerializer
     queryset = Shop.objects.all()
     # permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.ShopSerializer
 
 
 class ServiceViewSet(generics.ListAPIView):

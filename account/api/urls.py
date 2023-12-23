@@ -7,14 +7,15 @@ from rest_framework.authtoken.views import obtain_auth_token
 from .views import (
     AccountViewSet,
     StaffViewSet,
-    ProfileViewSet,
-    LoginUserViewSet,
     CustomLoginAuthToken,
     CreateAccountViewSet,
     ViewerUserProfileViewSet,
     CreateUserProfileViewSet,
-
-
+    UpdateProfileViewSet,
+    UpdateProfileDetailAPIView,
+    FindAccountEmailViewSet,
+    ChangePasswordViewSet,
+    ResetPasswordViewSet,
 )
 
 app_name = 'account'
@@ -43,5 +44,15 @@ urlpatterns = [
 
     # Staff members
     path('login/', CustomLoginAuthToken.as_view(), name='login'),
+
+    path('update-profile/<int:id>/', UpdateProfileDetailAPIView.as_view(), name='update-profile'),
+    path('update/<int:pk>/', UpdateProfileViewSet.as_view(), name='update'),
+
+    path('looking-profile/<str:email>/', FindAccountEmailViewSet.as_view(), name='looking-profile'),
+    path('change-password/<int:pk>/', ChangePasswordViewSet.as_view(), name='change-password'),
+    path('reset-password/<int:pk>/', ResetPasswordViewSet.as_view(), name='reset-password'),
+
+
+
 
 ]

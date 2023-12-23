@@ -1,3 +1,4 @@
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -65,9 +66,61 @@ class LoginUserSerializer(serializers.ModelSerializer):
         fields = ['email', 'password']
 
 
-class TokenSerializer(serializers.ModelSerializer):
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.id')
     class Meta:
-        model = Token
+        model = Profile
+        fields = ['id', 'phone', 'bio', 'address', 'city', 'state', 'zipcode', 'photo_url', 'user']
+
+
+# Check Password
+class FindAccountEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
         fields = '__all__'
 
 
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = Account
+        fields = ['password', 'password2', 'old_password']
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
+
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"old_password": "Old password is not correct"})
+        return value
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
+
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(max_length=100)
+    password = serializers.CharField(max_length=100)
+
+    class Meta:
+        model = Account
+        fields = '__all__'
+
+    def save(self):
+        email = self.validated_data['email']
+        password = self.validated_data['password']
+        if Account.objects.filter(email=email).exists():
+            account = Account.objects.get(email=email)
+            account.set_password(password)
+            account.save()
+            return account
+        else:
+            raise serializers.ValidationError({'message': 'Please enter valid credentials.'})
