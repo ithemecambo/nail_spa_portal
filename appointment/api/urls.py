@@ -6,6 +6,7 @@ from .views import (
     ViewerBookingViewSet,
     AppointmentDetailViewSet,
     AppointmentViewByWeekDayViewSet,
+    MyViewerBookingByIdViewSet,
     MyViewerBookingViewSet,
     ViewAccountViewSet,
 )
@@ -21,5 +22,6 @@ urlpatterns = [
     path('getBookings/', ViewerBookingViewSet.as_view(), name='bookings'),
     path('staffs/', ViewAccountViewSet.as_view(), name='staffs'),
 
-    path('myBookings/<int:profile_id>/', MyViewerBookingViewSet.as_view(), name='myBookings'),
+    path('myBookingIds/<int:profile_id>/', MyViewerBookingByIdViewSet.as_view(), name='myBookingIds'),
+    path('myBookings/<int:profile_id>/<str:status>/', MyViewerBookingViewSet.as_view(), name='myBookings'),
 ]

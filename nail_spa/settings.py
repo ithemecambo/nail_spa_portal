@@ -25,6 +25,7 @@ SECRET_KEY = "django-insecure-+eo#c9h0=6%a-_8krlm+r!8$tzmq%g$m@a@0=5xx!py*((sr5)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.2.140']
 
 
@@ -58,10 +59,10 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ]
 }
 
 ROOT_URLCONF = "nail_spa.urls"

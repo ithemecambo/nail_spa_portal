@@ -1,0 +1,1 @@
+{"user": {"first_name": "test 1", "last_name": "test 1", "username": "test1", "email": "email_test1@gmail.com", "password": "Zaq12345@@", "is_active": True}, "phone": "200-200-2000", "bio": "Thank you for create an account with our app.", "address": "1200 Jamstown KT, KY-39399"}

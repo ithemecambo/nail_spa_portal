@@ -52,7 +52,8 @@ class AppointmentCreateForm(forms.ModelForm):
             'booking_day',
             'booking_time',
             'amount',
-            'notes'
+            'notes',
+            'appointment_status'
         ]
         widget = {
             'booking_hour': AdminTimeWidget(format='%H:%M')

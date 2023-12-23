@@ -39,7 +39,9 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'appointment_id', '__str__']
+    list_display = ['id', 'appointment_id', 'status']
+    list_display_links = ['id', 'appointment_id']
+    list_per_page = 15
 
 
 admin.site.register(Appointment, AppointmentAdmin)

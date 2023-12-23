@@ -11,9 +11,8 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        # fields = ['id', 'parent', 'name', 'price', 'symbol', 'photo_url',
-        #           'is_selected', 'description']
-        fields = ['id']
+        fields = ['id', 'parent', 'name', 'price', 'symbol', 'photo_url',
+                  'is_selected', 'description']
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -83,7 +82,16 @@ class YearOfWeekDaySerializer(serializers.ModelSerializer):
         fields = ['id', 'week_day', 'time_slots', 'is_booking', 'staff_members']
 
 
+class ViewerShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ['id', 'shop_name', 'tel', 'fax', 'email', 'website', 'twitter',
+                  'facebook', 'linkedin', 'instagram', 'address', 'latitude', 'longitude',
+                  'banner_url', 'logo_url', 'about']
+
+
 class ViewerAppointmentSerializer(serializers.ModelSerializer):
+    shop_id = ViewerShopSerializer(read_only=True)
     staff_id = ViewerStaffSerializer(read_only=True)
     profile_id = ViewerProfileSerializer(read_only=True)
     class Meta:

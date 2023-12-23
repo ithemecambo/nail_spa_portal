@@ -125,10 +125,17 @@ class ViewAccountViewSet(generics.ListAPIView):
     queryset = StaffProfile.objects.all()
 
 
+class MyViewerBookingByIdViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id'))
+        serializer = ViewerBookingSerializer(bookings, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class MyViewerBookingViewSet(APIView):
     def get(self, request, *args, **kwargs):
-        print(kwargs.get('profile_id'))
-        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id'))
+        # appointment_status
+        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id')).filter(appointment_id__appointment_status=kwargs.get('status'))
         serializer = ViewerBookingSerializer(bookings, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 

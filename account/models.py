@@ -47,8 +47,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
     updated_at = models.DateTimeField(auto_now=True, null=True, verbose_name='Updated Date')
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     objects = AccountManager()
 
@@ -105,7 +105,7 @@ class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile')
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Phone')
     bio = models.TextField(blank=True, null=True, verbose_name='Bio')
-    address = models.CharField(max_length=250, verbose_name='Address')
+    address = models.CharField(max_length=250, blank=True, null=True, verbose_name='Address')
     city = models.CharField(max_length=20, blank=True, null=True, verbose_name='City')
     state = models.CharField(max_length=20, blank=True, null=True, verbose_name='State')
     zipcode = models.CharField(max_length=20, blank=True, null=True, verbose_name='Zip Code')
@@ -117,7 +117,7 @@ class Profile(models.Model):
         return f'{self.user.username}'
 
     def name(self):
-        return f'{self.user.first_name} {self.user.first_name}'
+        return f'[{self.user.id}] - {self.user.first_name} {self.user.last_name}'
 
     def profile(self):
         if self.photo_url:

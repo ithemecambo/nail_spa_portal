@@ -8,6 +8,13 @@ from .views import (
     AccountViewSet,
     StaffViewSet,
     ProfileViewSet,
+    LoginUserViewSet,
+    CustomLoginAuthToken,
+    CreateAccountViewSet,
+    ViewerUserProfileViewSet,
+    CreateUserProfileViewSet,
+
+
 )
 
 app_name = 'account'
@@ -17,7 +24,7 @@ urlpatterns = [
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('login/', obtain_auth_token, name=None),
+    path('login-user/', obtain_auth_token, name=None),
     path('register/', obtain_auth_token, name=None),
 
     path('accounts/', AccountViewSet.as_view(), name=None),
@@ -25,7 +32,16 @@ urlpatterns = [
          AccountViewSet.as_view(), name='account-detail'),
 
     path('getUsers/', StaffViewSet.as_view(), name='getUsers'),
-    path('profile/<int:id>/', ProfileViewSet.as_view(), name='profile'),
 
+    # Account
+    path('account/<int:pk>/', CreateAccountViewSet.as_view(), name='account'),
+    path('create-account/', CreateAccountViewSet.as_view(), name='create-account'),
+
+    # Profile
+    path('profile/<int:pk>/', ViewerUserProfileViewSet.as_view(), name='profile'),
+    path('create-profile/', CreateUserProfileViewSet.as_view(), name='create-profile'),
+
+    # Staff members
+    path('login/', CustomLoginAuthToken.as_view(), name='login'),
 
 ]

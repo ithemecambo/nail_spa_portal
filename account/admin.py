@@ -10,6 +10,7 @@ class AccountAdmin(UserAdmin):
     model = Account
 
     list_display = [
+        'id',
         'username',
         'get_full_name',
         'email',
@@ -18,6 +19,7 @@ class AccountAdmin(UserAdmin):
         'active',
     ]
     list_display_links = [
+        'id',
         'username',
         'get_full_name',
         'email',
@@ -35,7 +37,7 @@ class AccountAdmin(UserAdmin):
         'fax',
         'email'
     ]
-    list_per_page = 12
+
     fieldsets = (
         (None, {'fields': ('first_name', 'last_name', 'username')}),
         ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_active')}),
@@ -51,6 +53,8 @@ class AccountAdmin(UserAdmin):
         'id',
         'first_name'
     ]
+    ordering = ['-id']
+    list_per_page = 12
 
 
 class StaffAdmin(admin.ModelAdmin):
@@ -61,7 +65,7 @@ class StaffAdmin(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'name', 'phone', 'city', 'state', 'zipcode']
+    list_display = ['id', 'profile', 'name', 'phone', 'city', 'state', 'zipcode']
     list_display_links = ['profile', 'name', 'phone', 'city']
     list_per_page = 12
 
