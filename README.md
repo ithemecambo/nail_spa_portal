@@ -217,10 +217,7 @@ $ BaseUrl + create-review/
 <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/6.shop.png" width="100%">
 
 #### Mobile (iOS)
-<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.1.login.png" width="170">
-<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.2.create-account.png" width="170">
-<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.1.home.png" width="170">
-<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.2.notification.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.1.login.png" width="170"><img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.2.create-account.png" width="170"><img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.1.home.png" width="170"><img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.2.notification.png" width="170">
 <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.1.appointment.png" width="170">
 <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.2.appointment.png" width="170">
 <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.3.appointment.png" width="170">
