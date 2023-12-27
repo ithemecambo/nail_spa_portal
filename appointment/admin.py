@@ -60,7 +60,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Appointment, AppointmentAdmin)
-admin.site.register(YearOfWeekDay, YearOfWeekDayAdmin)
+# admin.site.register(YearOfWeekDay, YearOfWeekDayAdmin)
 admin.site.register(TimeSlot, TimeSlotAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(Review, ReviewAdmin)

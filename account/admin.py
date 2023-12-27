@@ -4,6 +4,10 @@ from account.forms import *
 from account.models import *
 
 
+admin.site.site_header = 'Nail & Spa Springs'
+admin.site.site_title = 'Nail & Spa'
+
+
 class AccountAdmin(UserAdmin):
     add_form = AccountCreateForm
     form = AccountUpdateForm
