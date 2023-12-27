@@ -9,6 +9,9 @@ from .views import (
     MyViewerBookingByIdViewSet,
     MyViewerBookingViewSet,
     ViewAccountViewSet,
+    CancelAppointmentViewSet,
+    RescheduleAppointmentViewSet,
+    ReviewViewSet,
 )
 
 urlpatterns = [
@@ -24,4 +27,10 @@ urlpatterns = [
 
     path('myBookingIds/<int:profile_id>/', MyViewerBookingByIdViewSet.as_view(), name='myBookingIds'),
     path('myBookings/<int:profile_id>/<str:status>/', MyViewerBookingViewSet.as_view(), name='myBookings'),
+
+    path('cancel-appointment/<int:pk>/', CancelAppointmentViewSet.as_view(), name='cancel-appointment'),
+    path('reschedule-appointment/<int:pk>/', RescheduleAppointmentViewSet.as_view(), name='reschedule-appointment'),
+
+    path('create-review/', ReviewViewSet.as_view(), name='create-review'),
+
 ]

@@ -109,13 +109,27 @@ class ViewerBookingSerializer(serializers.ModelSerializer):
 
 class MyViewerBookingSerializer(serializers.ModelSerializer):
     appointments = ViewerAppointmentSerializer(read_only=True)
-    # packages = ViewerServiceSerializer(many=True, read_only=True)
     bookings = ViewerBookingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Appointment
         fields = '__all__'
-        # fields = ['id', 'shop_id', 'staff_id', 'profile_id', 'booking_day', 'booking_time',
-        #           'amount', 'notes', 'appointment_status', 'bookings', 'appointment_id']
 
+
+class CancelAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
+
+class RescheduleAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 

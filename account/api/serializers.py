@@ -70,7 +70,8 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.id')
     class Meta:
         model = Profile
-        fields = ['id', 'phone', 'bio', 'address', 'city', 'state', 'zipcode', 'photo_url', 'user']
+        fields = ['id', 'phone', 'bio', 'address', 'house_no', 'street_no', 'city', 'state',
+                  'zipcode', 'photo_url', 'user']
 
 
 # Check Password

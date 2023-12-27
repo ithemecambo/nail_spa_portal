@@ -21,7 +21,6 @@ from .views import (
 app_name = 'account'
 
 urlpatterns = [
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
@@ -42,7 +41,6 @@ urlpatterns = [
     path('profile/<int:pk>/', ViewerUserProfileViewSet.as_view(), name='profile'),
     path('create-profile/', CreateUserProfileViewSet.as_view(), name='create-profile'),
 
-    # Staff members
     path('login/', CustomLoginAuthToken.as_view(), name='login'),
 
     path('update-profile/<int:id>/', UpdateProfileDetailAPIView.as_view(), name='update-profile'),
@@ -51,8 +49,6 @@ urlpatterns = [
     path('looking-profile/<str:email>/', FindAccountEmailViewSet.as_view(), name='looking-profile'),
     path('change-password/<int:pk>/', ChangePasswordViewSet.as_view(), name='change-password'),
     path('reset-password/<int:pk>/', ResetPasswordViewSet.as_view(), name='reset-password'),
-
-
 
 
 ]

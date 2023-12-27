@@ -135,7 +135,67 @@ class MyViewerBookingByIdViewSet(APIView):
 class MyViewerBookingViewSet(APIView):
     def get(self, request, *args, **kwargs):
         # appointment_status
-        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id')).filter(appointment_id__appointment_status=kwargs.get('status'))
+        bookings = Booking.objects.filter(appointment_id__profile_id=kwargs.get('profile_id'))\
+            .filter(appointment_id__appointment_status=kwargs.get('status'))\
+            .order_by('-appointment_id__booking_day', '-appointment_id__booking_time')
         serializer = ViewerBookingSerializer(bookings, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+
+class CancelAppointmentViewSet(APIView):
+    def get_object(self, pk):
+        try:
+            return Appointment.objects.get(pk=pk)
+        except Appointment.DoesNotExist:
+            return None
+
+    def put(self, request, pk, *args, **kwargs):
+        instance = self.get_object(pk)
+        if not instance:
+            return Response({'data': 'Appointment does not exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        print(f'instance: {instance} \n request-data: {request.data}')
+        serializer = CancelAppointmentSerializer(instance=instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RescheduleAppointmentViewSet(APIView):
+    def get_object(self, pk):
+        try:
+            return Appointment.objects.get(pk=pk)
+        except Appointment.DoesNotExist:
+            return None
+
+    def put(self, request, pk, *args, **kwargs):
+        instance = self.get_object(pk)
+        if not instance:
+            return Response({'data': 'Appointment does not exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        print(f'instance: {instance} \n request-data: {request.data}')
+        serializer = RescheduleAppointmentSerializer(instance=instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReviewViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

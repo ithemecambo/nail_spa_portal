@@ -1,3 +1,5 @@
+from django.utils.html import format_html
+
 from account.models import *
 from shop.models import *
 
@@ -61,6 +63,24 @@ class Appointment(BaseModel):
     def __str__(self):
         return f'{self.booking_day}\t|\t{self.booking_time}'
 
+    def profile(self):
+        return f'[{self.profile_id.id}] - {self.profile_id.user.first_name} {self.profile_id.user.last_name}'
+
+    def check_appointment_status(self):
+        if self.appointment_status == 'Pending':
+            return format_html('<span style="color: #546E7A; font-weight: bold;">{0}</span>',
+                               self.appointment_status.upper())
+        elif self.appointment_status == 'Upcoming':
+            return format_html('<span style="color: #2979FF; font-weight: bold;">{0}</span>',
+                               self.appointment_status.upper())
+        elif self.appointment_status == 'Completed':
+            return format_html('<span style="color: #43A047; font-weight: bold;">{0}</span>',
+                               self.appointment_status.upper())
+        return format_html('<span style="color: #DD2C00; font-weight: bold;">{0}</span>',
+                           self.appointment_status.upper())
+
+    check_appointment_status.short_description = 'appointment_status'
+
 
 class Booking(BaseModel):
     appointment_id = models.ForeignKey(Appointment, on_delete=models.CASCADE,
@@ -75,4 +95,65 @@ class Booking(BaseModel):
     def __str__(self):
         return f'{self.appointment_id}'
 
+    def appointment_status(self):
+        if self.appointment_id.appointment_status == 'Pending':
+            return format_html('<span style="color: #546E7A; font-weight: bold;">{0}</span>',
+                               self.appointment_id.appointment_status.upper())
+        elif self.appointment_id.appointment_status == 'Upcoming':
+            return format_html('<span style="color: #2979FF; font-weight: bold;">{0}</span>',
+                               self.appointment_id.appointment_status.upper())
+        elif self.appointment_id.appointment_status == 'Completed':
+            return format_html('<span style="color: #43A047; font-weight: bold;">{0}</span>',
+                               self.appointment_id.appointment_status.upper())
+        return format_html('<span style="color: #DD2C00; font-weight: bold;">{0}</span>',
+                           self.appointment_id.appointment_status.upper())
+    appointment_status.short_description = 'appointment_status'
 
+    def who_make_an_appointment(self):
+        return f'[{self.appointment_id.profile_id.id}] - {self.appointment_id.profile_id.user.first_name} ' \
+               f'{self.appointment_id.profile_id.user.last_name}'
+    who_make_an_appointment.short_description = 'who_make_an_appointment'
+
+
+class Review(BaseModel):
+    appointment_id = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='reviews',
+                                       verbose_name='Appointment')
+    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='reviews',
+                                   verbose_name='Profile')
+    rating_num = models.IntegerField(default=0, verbose_name='Rating Number')
+    comment = models.TextField(blank=True, null=True, verbose_name='Comment')
+
+    def __str__(self):
+        return f'{self.appointment_id} | {self.profile_id}'
+
+    def get_full_name(self):
+        return f'{self.profile_id.user.first_name} {self.profile_id.user.last_name}'
+    get_full_name.short_description = 'Full Name'
+
+    def get_phone_number(self):
+        return f'{self.profile_id.phone}'
+    get_phone_number.short_description = 'Phone'
+
+    def get_email_address(self):
+        return f'{self.profile_id.user.email}'
+    get_email_address.short_description = 'Email'
+
+    def make_an_appointment(self):
+        return f'{self.appointment_id.booking_day} | {self.appointment_id.booking_time}'
+    make_an_appointment.short_description = 'Appointment'
+
+    # ⭐ ★☆ 💫
+    def rating_star(self):
+        if self.rating_num == 1:
+            return '⭐'
+        elif self.rating_num == 2:
+            return '⭐⭐'
+        elif self.rating_num == 3:
+            return '⭐⭐⭐'
+        elif self.rating_num == 4:
+            return '⭐⭐⭐⭐'
+        elif self.rating_num == 5:
+            return '⭐⭐⭐⭐⭐'
+        else:
+            return '⭐⭐⭐⭐⭐'
+    rating_star.short_description = 'Star'

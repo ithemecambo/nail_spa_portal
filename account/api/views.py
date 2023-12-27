@@ -161,19 +161,11 @@ class UpdateProfileDetailAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser, FileUploadParser]
 
     def put(self, request, id, *args, **kwargs):
+        print(request.data)
         if Profile.objects.filter(id=id).exists():
             profile = Profile.objects.get(id=id)
-            data = {
-                'phone': request.data.get('phone'),
-                'bio': request.data.get('bio'),
-                'address': request.data.get('address'),
-                'city': request.data.get('city'),
-                'state': request.data.get('state'),
-                'zipcode': request.data.get('zipcode'),
-                'photo_url': request.data.get('photo_url')
-            }
             serializer = serializers.UpdateProfileSerializer(instance=profile,
-                                                             data=data, partial=True)
+                                                             data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)

@@ -106,6 +106,8 @@ class Profile(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Phone')
     bio = models.TextField(blank=True, null=True, verbose_name='Bio')
     address = models.CharField(max_length=250, blank=True, null=True, verbose_name='Address')
+    house_no = models.CharField(max_length=20, blank=True, null=True, verbose_name='House #')
+    street_no = models.CharField(max_length=20, blank=True, null=True, verbose_name='Street #')
     city = models.CharField(max_length=20, blank=True, null=True, verbose_name='City')
     state = models.CharField(max_length=20, blank=True, null=True, verbose_name='State')
     zipcode = models.CharField(max_length=20, blank=True, null=True, verbose_name='Zip Code')
