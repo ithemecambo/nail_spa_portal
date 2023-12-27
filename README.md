@@ -39,11 +39,14 @@ Currently, I live with other people who come from the same country. Especially t
 - db.sqlite3, PostgreSQL
 #### Mobile (iOS)
 - Swift 5.3 (Storyboard)
+- Compatible OS version: 16
+- Compatible Dark & Light Mode
 - RESTFul API
 - Alamofire
 - SwiftyJSON
 - Calendar
 - Kingfisher
+- Lottie 
 - Crashlytics
 - Integrated (Facebook & Google)
 
@@ -205,17 +208,34 @@ $ BaseUrl + create-review/
 
 
 # Screenshot
+#### Backend (Customize Django Admin Interface)
 <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/1.dashboard.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/department.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/ambulance.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/patient.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/manufacturer.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/medicine.png" width="100%">
-<img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/appointment.png" width="100%">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/2.account.png" width="100%">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/3.profile.png" width="100%">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/4.appointment.png" width="100%">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/5.service.png" width="100%">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/web/backend/6.shop.png" width="100%">
+
+#### Mobile (iOS)
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.1.login.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/0.2.create-account.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.1.home.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/1.2.notification.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.1.appointment.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.2.appointment.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/2.3.appointment.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/3.1.booking.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/3.2.reschedule-booking.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/3.3.cencel-booking.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/3.4.completed-booking.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/3.5.review-booking.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/4.1.account-settings.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/4.2.account-info.png" width="170">
+<img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/mobile/iOS/4.3.shop-location.png" width="170">
 
 
 ## Support this repo
-* Star this repo <img src="https://github.com/ithemecambo/hospital_management_system/blob/master/screenshot/give-star.png" width="60">
+* Star this repo <img src="https://github.com/ithemecambo/nail_spa_portal/blob/main/screenshots/give-star.png" width="60">
 
 
 ## Social Contact
