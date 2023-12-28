@@ -41,6 +41,7 @@ Currently, I live with other people who come from the same country. Especially t
 - Swift 5.3 (Storyboard)
 - Compatible OS version: 16
 - Compatible Dark & Light Mode
+- CoreData 
 - RESTFul API
 - Alamofire
 - SwiftyJSON
