@@ -10,6 +10,7 @@ class ServiceCreateForm(forms.ModelForm):
             'name',
             'price',
             'symbol',
+            'is_selected',
             'photo_url',
             'description',
         ]

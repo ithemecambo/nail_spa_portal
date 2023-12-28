@@ -130,8 +130,13 @@ class ViewerUserProfileViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
         profiles = Profile.objects.filter(user__id=kwargs.get('pk', None))
-        serializer = serializers.ViewerProfileSerializer(profiles, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        print(profiles.count())
+        if len(profiles) > 0:
+            serializer = serializers.ViewerProfileSerializer(profiles, many=True)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response({'message': 'Authentication failure because you are a staff member of '
+                                    '`Nail & Spa` so can not login as a normal user app.'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomLoginAuthToken(ObtainAuthToken):
