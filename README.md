@@ -36,7 +36,7 @@ Currently, I live with other people who come from the same country. Especially t
 - Django
 - Rest Framework
 - Authtoken
-- db.sqlite3, PostgreSQL
+- db.sqlite3, MySQL
 #### Mobile (iOS)
 - Swift 5.3 (Storyboard)
 - Compatible OS version: 16
@@ -239,6 +239,7 @@ $ BaseUrl + create-review/
 ## Social Contact
 * LinkedIn: <a href="https://www.linkedin.com/in/senghortkheang">kheang senghort</a>
 * Portfolio: <a href="https://ithemecambo.github.io/portfolio">Senghort Kheang</a>
+* Demo App: <a href="https://youtu.be/IqsyACrVPBE">Nail & Spa Springs</a>
 
 
 ## Contact Info
