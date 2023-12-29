@@ -135,6 +135,8 @@ class StaffProfile(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Phone')
     fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
     ssn = models.CharField(max_length=15, blank=False, null=False, verbose_name='Social Security Number')
+    license_no = models.CharField(max_length=30, blank=True, null=True, verbose_name='License No')
+    expiration_date = models.CharField(max_length=20, blank=True, null=True, verbose_name='Expiration Date')
     address = models.CharField(max_length=250, verbose_name='Address')
     color = models.CharField(max_length=10, default='#')
     status = models.BooleanField(default=True)

@@ -60,9 +60,10 @@ class AccountAdmin(UserAdmin):
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'name', 'nickname', 'fax', 'ssn']
-    list_display_links = ['profile', 'name', 'nickname', 'fax', 'ssn']
-    ordering = ['nickname',]
+    list_display = ['profile', 'name', 'nickname', 'phone', 'ssn', 'license_no', 'expiration_date']
+    list_display_links = ['profile', 'name', 'nickname', 'phone', 'ssn']
+    search_fields = ['nickname', 'phone', 'ssn', 'license_no']
+    ordering = ['nickname', ]
     list_per_page = 12
 
 
