@@ -28,13 +28,13 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-+eo#c9h0=6%a-_8krlm+r!8$tzmq%g$m@a@0=5xx!py*((sr5)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('IP_ADDRESS')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('IP_ADDRESS'), env('IP_IPHONE')]
 
 
 # Application definition
@@ -98,28 +98,28 @@ WSGI_APPLICATION = "nail_spa.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # Database connection to db.sqlite3
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 
 # Database connection to real server databases
-DATABASES = {
-    'default': {
-        'ENGINE': env('DB_ENGINE'),
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-        'OPTIONS': {
-            'autocommit': True,
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('DB_ENGINE'),
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': env('DB_HOST'),
+#         'PORT': env('DB_PORT'),
+#         'OPTIONS': {
+#             'autocommit': True,
+#         },
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
