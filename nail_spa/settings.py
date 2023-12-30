@@ -19,23 +19,22 @@ pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# env = environ.Env(
-#     DEBUG=(bool, False),
-# )
-# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+env = environ.Env(
+    DEBUG=(bool, False),
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+eo#c9h0=6%a-_8krlm+r!8$tzmq%g$m@a@0=5xx!py*((sr5)'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('IP_ADDRESS'), env('IP_IPHONE')]
-ALLOWED_HOSTS = ['senghort.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('IP_ADDRESS'), env('IP_IPHONE')]
 
 
 # Application definition
