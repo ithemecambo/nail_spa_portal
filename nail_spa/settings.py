@@ -98,28 +98,28 @@ WSGI_APPLICATION = "nail_spa.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # Database connection to db.sqlite3
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Database connection to real server databases
-# DATABASES = {
-#     'default': {
-#         'ENGINE': env('DB_ENGINE'),
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASSWORD'),
-#         'HOST': env('DB_HOST'),
-#         'PORT': env('DB_PORT'),
-#         'OPTIONS': {
-#             'autocommit': True,
-#         },
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': env('DB_ENGINE'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+        'OPTIONS': {
+            'autocommit': True,
+        },
+    }
+}
 
 
 # Password validation
